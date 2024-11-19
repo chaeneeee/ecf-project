@@ -37,8 +37,8 @@ npm start
 
 ```json
 {
-  "keyword": "nestjs",
-  "userId": "12345",
+  "keyword": "티셔츠",
+  "userId": "chaeneee",
   "age": 25,
   "gender": "male",
   "region": "Seoul"
@@ -49,7 +49,7 @@ npm start
 
 ```json
 {
-  "keyword": "nestjs"
+  "keyword": "티셔츠"
 }
 ```  
 
@@ -59,7 +59,7 @@ npm start
 {
   "success": true,
   "data": {
-    "keyword": "nestjs",
+    "keyword": "티셔츠",
     "createdAt": "2024-11-19T15:09:53.140Z"
   }
 }
@@ -71,7 +71,7 @@ npm start
 {
   "success": true,
   "data": {
-    "keyword": "nestjs",
+    "keyword": "티셔츠",
     "createdAt": "2024-11-19T14:53:01.177Z"
   }
 }
@@ -97,8 +97,8 @@ npm start
 {
   "success": true,
   "data": [
-    { "keyword": "nestjs", "rank": 1, "score": 50 },
-    { "keyword": "swagger", "rank": 2, "score": 30 }
+    { "keyword": "티셔츠", "rank": 1, "score": 50 },
+    { "keyword": "청바지", "rank": 2, "score": 30 }
   ]
 }
 ```  
@@ -122,8 +122,8 @@ npm start
 {
   "success": true,
   "data": [
-    { "keyword": "nestjs", "count": 50 },
-    { "keyword": "swagger", "count": 30 }
+    { "keyword": "티셔츠", "count": 50 },
+    { "keyword": "청바지지", "count": 30 }
   ]
 }
 ```  
