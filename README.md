@@ -211,9 +211,16 @@ src
 `.env` 파일의 예시:  
 
 ```plaintext
+# Database
+DATABASE_URL=postgresql://username:password@localhost:5432/your_database
+
+# Redis
 REDIS_HOST=localhost
 REDIS_PORT=6379
-DATABASE_URL=postgresql://username:password@localhost:5432/your_database
+REDIS_KEY_EXPIRATION=86400
+
+# Application
+PORT=3000
 ```  
 
 ---
