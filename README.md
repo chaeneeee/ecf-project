@@ -31,7 +31,7 @@ npm start
 
 ### 1. **키워드 등록**  
 - **유형**: `POST`  
-- **URL**: `http://localhost:3000/api/search/keywords`  
+- **URL**: `http://localhost:3000/search/keywords`  
 
 #### **Request Body (회원)**  
 
@@ -89,7 +89,7 @@ npm start
 
 ### 2. **인기 검색어 조회**  
 - **유형**: `GET`  
-- **URL**: `http://localhost:3000/api/search/trending`  
+- **URL**: `http://localhost:3000/search/trending`  
 
 #### **Response Body**  
 
@@ -114,7 +114,7 @@ npm start
 
 ### 3. **데이터베이스 저장된 키워드 조회**  
 - **유형**: `GET`  
-- **URL**: `http://localhost:3000/api/search/db-keywords`  
+- **URL**: `http://localhost:3000/search/db-keywords`  
 
 #### **Response Body**  
 
