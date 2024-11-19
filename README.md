@@ -1,251 +1,228 @@
-# 백엔드 개발자 기술 과제
 
-## 과제 개요
-쇼핑몰 서비스의 인기 검색어 기능을 구현하는 백엔드 API를 개발합니다.
+---
 
-### 필수 요구사항
+#  
 
-1. 검색어 수집 API
-   - 검색어 저장 API 구현
-   - 검색 시간 기록
-   - 간단한 사용자 식별값 저장 (임의의 값으로 대체 가능)
+# 📘 **ECF - 과제 README**  
 
-2. 인기 검색어 조회 API
-   - 24시간 동안의 인기 검색어 순위 제공
-   - 상위 10개 검색어 반환
-   - 검색어별 검색 횟수 포함
-  
-## API 명세 예시
-아래는 참고용 예시이며, 자유롭게 변경하실 수 있습니다.
+#  
 
-### 1. 검색어 저장 API
-```
-POST /api/search/keywords
+---
 
-# 비회원 요청 예시
-Request:
+## 🛠️ **프로젝트 실행 방법**
+
+### 1. **필수 모듈 설치**  
+아래 명령어를 실행하여 프로젝트에 필요한 Node.js 모듈을 설치합니다
+
+```bash
+npm install
+```  
+
+### 2. **프로젝트 실행**  
+애플리케이션 시작을 위해 아래 명렁어를 입력해주세요 
+
+```bash
+npm start
+```  
+
+
+---
+
+## 🌐 **API 사용 방법**
+#### Swagger URL : `http://localhost:3000/ecf-api-docs`
+### 1. **키워드 등록**  
+- **유형**: `POST`  
+- **URL**: `http://localhost:3000/search/keywords`  
+
+#### **Request Body (회원)**  
+
+```json
 {
-  "keyword": "맨투맨",
-  "ip": "123.456.789.012"  // 동일 IP의 과도한 검색 방지, 지역별 트렌드 분석 가능
+  "keyword": "티셔츠",
+  "userId": "chaeneee",
+  "age": 25,
+  "gender": "male",
+  "region": "Seoul"
 }
+```  
 
-# 회원 요청 예시
-Request:
+#### **Request Body (비회원)**  
+
+```json
 {
-  "keyword": "맨투맨",
-  "userId": "user123",
-  "userInfo": {
-    "age": 28,
-    "gender": "female",
-    "region": "서울"
-  }
+  "keyword": "티셔츠"
 }
+```  
 
-Response: (200 OK)
+#### **Response Body (회원)**  
+
+```json
 {
   "success": true,
   "data": {
-    "id": 1,
-    "keyword": "맨투맨",
-    "createdAt": "2024-10-28T09:00:00.000Z",
-    // ... 저장된 데이터
+    "keyword": "티셔츠",
+    "createdAt": "2024-11-19T15:09:53.140Z"
   }
 }
-```
+```  
 
-### 2. 인기 검색어 조회 API
-```
-GET /api/search/trending
+#### **Response Body (비회원)**  
 
-# 기본 조회
-GET /api/search/trending
+```json
+{
+  "success": true,
+  "data": {
+    "keyword": "티셔츠",
+    "createdAt": "2024-11-19T14:53:01.177Z"
+  }
+}
+```  
 
-# 필터링 조회 예시 (선택적 구현)
-GET /api/search/trending?age=20-30&gender=female&region=서울
+#### **응답 Status Code**  
 
-Response: (200 OK)
+| **Status Code** | **응답 본문**                                                                 |
+|------------------|------------------------------------------------------------------------------|
+| `201`           | 검색어가 성공적으로 저장되었습니다.                                           |
+| `400`           | 요청에 검색어가 없거나 필수 데이터가 누락되었습니다.                          |
+| `500`           | 서버에서 검색어 저장 중 예외 발생.                                           |  
+
+---
+
+### 2. **인기 검색어 조회**  
+- **유형**: `GET`  
+- **URL**: `http://localhost:3000/search/trending`  
+
+#### **Response Body**  
+
+```json
 {
   "success": true,
   "data": [
-    {
-      "keyword": "맨투맨",
-      "count": 150,
-      "rank": 1,
-      "variation": 2  // 옵션: 순위 변동
-    },
-    {
-      "keyword": "청바지",
-      "count": 120,
-      "rank": 2,
-      "variation": -1
-    }
-    // ... 상위 10개
+    { "keyword": "티셔츠", "rank": 1, "score": 50 },
+    { "keyword": "청바지", "rank": 2, "score": 30 }
   ]
 }
-```
-응답 구조나 필드는 구현하는 방향에 따라 자유롭게 변경하실 수 있습니다.
-추가적인 기능이나 필드를 구현하셔도 좋습니다.
+```  
 
-### 기술 스택
-  - NestJS
-  - PostgreSQL 또는 MongoDB
-  - Prisma (선택 사항)
-  - Redis (선택 사항)
+#### **응답 Status Code**  
 
-### 평가 기준
+| **Status Code** | **응답 본문**                                                         |
+|------------------|----------------------------------------------------------------------|
+| `200`           | 인기 검색어 목록이 성공적으로 반환되었습니다.                         |
+| `500`           | Redis에서 인기 검색어 데이터를 가져오지 못하였습니다.                 |  
 
-- **코드 구조 (40%)**
-  - 코드 가독성
-  - 기본적인 에러 처리
-  - TypeScript 활용
+---
 
-- **기능 구현 (40%)**
-  - API 정상 작동
-  - 데이터 저장 및 조회 정확성
-  - HTTP 상태 코드 적절성
+### 3. **데이터베이스 저장된 키워드 조회**  
+- **유형**: `GET`  
+- **URL**: `http://localhost:3000/search/db-keywords`  
 
-- **문서화 (20%)**
-  - README 작성
-  - 코드 주석
+#### **Response Body**  
 
-### 선택 구현 사항
-구현하면 가산점이 있는 항목들입니다:
-- API 문서화 (Swagger)
-- 테스트 코드
-- 성능 최적화
-- 데이터 검증
-
-
-## 패키지 설치 및 설정 예시
-
-### NestJS CLI 설치 (설치되어 있지 않은 경우)
-```bash
-npm i -g @nestjs/cli
-```
-
-### 새 프로젝트 생성
-```bash
-# NestJS 프로젝트 생성
-nest new search-trending-api(프로젝트명 자유롭게 입력)
-# 패키지 매니저 선택 화면에서 npm 선택
-```
-
-### Prisma 설정 (선택)
-```bash
-# Prisma 설치
-npm install @prisma/client prisma --save-dev
-
-# Prisma 초기화
-npx prisma init
-```
-
-schema.prisma 예시:
-```prisma
-model SearchKeyword {
-  id        Int      @id @default(autoincrement())
-  keyword   String
-  userId    String
-  createdAt DateTime @default(now())
-
-  @@index([createdAt])
-  @@index([keyword])
+```json
+{
+  "success": true,
+  "data": [
+    { "keyword": "티셔츠", "count": 50 },
+    { "keyword": "청바지지", "count": 30 }
+  ]
 }
+```  
+
+#### **응답 Status Code**  
+
+| **Status Code** | **응답 본문**                                                         |
+|------------------|----------------------------------------------------------------------|
+| `200`           | 데이터베이스 검색어 목록이 성공적으로 반환되었습니다.                  |
+| `500`           | 데이터베이스에서 검색어 데이터를 가져오지 못한 경우.                   |  
+
+---
+
+## 🧩 **구현한 기능 목록**  
+
+### 1. **키워드 저장**  
+- **회원/비회원 구분 처리**:  
+  - 회원: `userId`로 검색어 저장.  
+  - 비회원: 클라이언트 IP 주소(`ip`)를 자동으로 추출하여 저장.  
+  - 회원은 지역 데이터를 포함하고, 비회원은 IP 주소로 저장하여 지역별 데이터 활용 가능.  
+
+- **검색어 중복 처리 방지**:  
+  - Redis에 `search:userId` 또는 `search:ip` 형태로 사용자 키를 생성하고, 값(value)으로 사용자가 검색한 키워드 목록을 저장.  
+  - Redis에 이미 등록된 식별자가 이미 등록된 value의 키워드를 검색하면
+    검색 횟수(count)가 증가하지 않고 데이터베이스에 중복 저장하지 않음.
+  - 새로운 검색어에 대해서만 Redis와 데이터베이스 업데이트.  
+
+### 2. **Redis를 통한 인기 검색어 관리**  
+- Redis의 `ZSET` 자료구조를 사용하여 검색어와 검색 횟수(`score`)를 저장.  
+- `ZRANGE trending:keywords 0 9 WITHSCORES`로 검색 횟수 기준으로 정렬하여 1위~10위 반환.  
+- Redis 키(`trending:keywords`)는 TTL(24시간)이 설정되어 24시간 동안의 랭킹 유지.  
+  TTL 조절을 통해 기간별 인기 검색어 제공 가능.  
+
+### 3. **데이터베이스 저장된 키워드 조회**  
+- 데이터베이스에는 총 키워드와 그 검색 횟수가 저장됨.  
+- 검색어를 `count` 기준 내림차순(`desc`)으로 정렬하여 검색 순위를 제공.  
+
+### 4. **Redis TTL 설정**  
+- 모든 검색 키는 Redis에서 24시간 동안 유지되어 단기적 인기 검색어 트렌드를 확인 가능.  
+
+### 5. **예외 처리**  
+- **비즈니스 로직 예외**:  
+  - 잘못된 요청이나 서버 처리 중 오류 발생 시 예외 처리.  
+
+- **ExceptionCode 열거형**:  
+  - `KEYWORD_NOT_FOUND`, `SEARCH_SAVE_FAILED`, `TRENDING_FETCH_FAILED` 등 상세한 예외 코드와 메시지로 관리.  
+
+---
+
+## 📂 **폴더 구조**  
+
 ```
+src
+├── common
+│   └── middleware
+│       └── ip.middleware.ts         # IP 추출을 위한 미들웨어
+├── exception
+│   ├── business-login.exception.ts  # 커스텀 비즈니스 로직 예외
+│   └── exception-code.enum.ts       # 예외 코드 열거형
+├── redis
+│   └── redis.config.ts              # Redis 클라이언트 및 설정
+├── search
+│   ├── dto
+│   │   └── create-search-query.dto.ts # 검색 요청 데이터 DTO
+│   ├── entity
+│   │   └── search-query.entity.ts   # 회원 검색어 Entity
+│   ├── search.controller.ts         # 검색 API 엔드포인트 처리
+│   ├── search.module.ts             # 검색 모듈 정의
+│   └── search.service.ts            # 검색 비즈니스 로직
+├── prisma
+│   ├── prisma.module.ts             # Prisma 모듈 정의
+│   ├── prisma.service.ts            # Prisma 서비스 (DB 액세스)
+│   └── schema.prisma                # Prisma 스키마 정의
+├── app.controller.spec.ts           # 테스트용 컨트롤러
+├── app.controller.ts                # 기본 컨트롤러
+├── app.module.ts                    # 메인 애플리케이션 모듈
+├── app.service.ts                   # 기본 서비스
+└── main.ts                          # 애플리케이션 엔트리포인트
+```  
 
-### Redis 설정 (선택)
-```bash
-# Redis 클라이언트 설치
-npm install ioredis
+---
 
-# Redis 모듈 설치 (NestJS용)
-npm install @nestjs/cache-manager cache-manager
-```
+## 💡 **.env 파일**  
 
-Redis 연결 예시:
-```typescript
-// redis.config.ts
-import { Redis } from 'ioredis';
+`.env` 파일의 예시:  
 
-export const redis = new Redis({
-  host: 'localhost',
-  port: 6379,
-});
-
-// app.module.ts
-import { CacheModule } from '@nestjs/cache-manager';
-import { Module } from '@nestjs/common';
-import * as redisStore from 'cache-manager-ioredis';
-
-@Module({
-  imports: [
-    CacheModule.register({
-      store: redisStore,
-      host: 'localhost',
-      port: 6379,
-    }),
-  ],
-})
-export class AppModule {}
-```
-
-Redis 사용 예시:
-```typescript
-// 인기 검색어 저장
-await redis.zincrby('trending:keywords', 1, keyword);
-
-// 인기 검색어 조회
-const trending = await redis.zrevrange('trending:keywords', 0, 9, 'WITHSCORES');
-```
-
-## 환경변수 설정 (.env.example)
 ```plaintext
 # Database
-DATABASE_URL="postgresql://username:password@localhost:5432/search_db?schema=public"
+DATABASE_URL=postgresql://username:password@localhost:5432/your_database
 
 # Redis
 REDIS_HOST=localhost
 REDIS_PORT=6379
+REDIS_KEY_EXPIRATION=86400
 
 # Application
 PORT=3000
-```
+```  
 
-이 설정들은 참고용이며, 다른 방식으로 구현해도 무방합니다.
+---
 
-프로젝트를 본인의 GitHub 저장소에 업로드하여 진행해 주세요.
-
-## 제출 방법
-
-작업이 완료되면 다음 사항을 이메일(kingoxpo@ecfkorea.com)로 전달해 주세요:
-- 제목: [이름] 백엔드 개발자 과제 제출
-- GitHub 저장소 URL
-- 이름
-- 연락처
-
-
-## 필수 제출 사항
-
-1. `README.md` 파일에 다음 내용을 포함해 주세요:
-   - 프로젝트 실행 방법
-   - API 사용 방법
-   - 구현한 기능 목록
-   
-2. `SUBMISSION.md` 파일에 다음 내용을 포함해 주세요:
-   - 구현 방법 설명
-   - 어려웠던 점
-   - 개선하고 싶은 부분
-
-## 과제 진행 시 유의사항
-
-- 과제 수행 기간: 2차 면접일 전일까지(주말 및 공휴일 무관)
-- 앱 실행에 필요한 모든 절차는 README.md에 명시
-- 기본적인 기능 구현에 집중해 주세요
-- 모든 기능을 완벽하게 구현하지 못하더라도 구현한 내용을 바탕으로 평가합니다
-- 과제 진행 중 문의사항은 이메일(kingoxpo@ecfkorea.com)로 연락 주시기 바랍니다
-
-## 참고 사항
-- 필요한 라이브러리는 자유롭게 선택하여 사용 가능합니다.
-- 데이터베이스 스키마는 자유롭게 설계해도 됩니다.
-- 기능 동작에 중점을 두고 평가합니다
-- 완성도보다는 문제 해결 과정을 중요하게 봅니다
-- 구현하지 못한 부분은 어떻게 구현하고 싶었는지 설명해 주세요
