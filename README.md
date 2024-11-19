@@ -25,10 +25,11 @@ npm install
 npm start
 ```  
 
+
 ---
 
 ## 🌐 **API 사용 방법**
-
+#### Swagger URL : `http://localhost:3000/ecf-api-docs`
 ### 1. **키워드 등록**  
 - **유형**: `POST`  
 - **URL**: `http://localhost:3000/search/keywords`  
