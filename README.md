@@ -3,7 +3,7 @@
 
 #  
 
-# 🕶️ **ECF - 프로젝트 README**  
+# 📘 **ECF - 과제 README**  
 
 #  
 
